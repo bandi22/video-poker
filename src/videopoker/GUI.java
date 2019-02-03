@@ -2,10 +2,12 @@ package videopoker;
 
 import java.awt.*;
 import java.awt.event.*;
-import java.util.*;
 import javax.swing.*;
 
 public class GUI {
+	
+	static Deck currentDeck = new Deck();
+	static Card[] hand;
 	
 public static void main(String[] args) {
 		
@@ -32,11 +34,20 @@ public static void buildGUI()
 	JButton hold4 = new JButton("HOLD");
 	JButton hold5 = new JButton("HOLD");
 	JButton dealButton = new JButton("DRAW");
+	JButton betOne = new JButton("BET ONE");
+	JButton betMax = new JButton("BET MAX");
 	
 	JTextArea handList = new JTextArea();
+	JTextArea multi1 = new JTextArea();
+	JTextArea multi2 = new JTextArea();
+	JTextArea multi3 = new JTextArea();
+	JTextArea multi4 = new JTextArea();
+	JTextArea multi5 = new JTextArea();
 	
 	JLabel creditsLabel = new JLabel("CREDITS:");
 	JLabel credits = new JLabel();
+	JLabel betsLabel = new JLabel("BET:");
+	JLabel bets = new JLabel();
 	
 	PictureBox pbCard1 = new PictureBox();
 	PictureBox pbCard2 = new PictureBox();
@@ -60,6 +71,8 @@ public static void buildGUI()
 	panel.add(hold4);
 	panel.add(hold5);
 	panel.add(dealButton);
+	panel.add(betOne);
+	panel.add(betMax);
 	panel.add(pbCard1);
 	panel.add(pbCard2);
 	panel.add(pbCard3);
@@ -68,49 +81,198 @@ public static void buildGUI()
 	panel.add(handList);
 	panel.add(creditsLabel);
 	panel.add(credits);
+	panel.add(bets);
+	panel.add(betsLabel);
+	panel.add(multi1);
+	panel.add(multi2);
+	panel.add(multi3);
+	panel.add(multi4);
+	panel.add(multi5);
 	
 	panel.setBackground(Color.BLUE);
 	
 	/*** BUTTONS ***/
 	
-	hold1.setSize(80, 30);
-	hold2.setSize(80, 30);
-	hold3.setSize(80, 30);
-	hold4.setSize(80, 30);
-	hold5.setSize(80, 30);
-	dealButton.setSize(80,60);
+	hold1.setSize(80,30);
+	hold2.setSize(80,30);
+	hold3.setSize(80,30);
+	hold4.setSize(80,30);
+	hold5.setSize(80,30);
+	dealButton.setSize(90,60);
+	betOne.setSize(90,40);
+	betMax.setSize(90,40);
 	
-	hold1.setLocation(30, 530);
-	hold2.setLocation(160, 530);
-	hold3.setLocation(290, 530);
-	hold4.setLocation(420, 530);
-	hold5.setLocation(550, 530);
-	dealButton.setLocation(680,350);
+	hold1.setLocation(30,530);
+	hold2.setLocation(160,530);
+	hold3.setLocation(290,530);
+	hold4.setLocation(420,530);
+	hold5.setLocation(550,530);
+	dealButton.setLocation(680,460);
+	betOne.setLocation(680,400);
+	betMax.setLocation(680,350);
+	
+	hold1.setEnabled(false);
+	hold2.setEnabled(false);
+	hold3.setEnabled(false);
+	hold4.setEnabled(false);
+	hold5.setEnabled(false);
+	
+	hold1.setFocusable(false);
+	hold2.setFocusable(false);
+	hold3.setFocusable(false);
+	hold4.setFocusable(false);
+	hold5.setFocusable(false);
+	dealButton.setFocusable(false);
+	betOne.setFocusable(false);
+	betMax.setFocusable(false);
 	
 	dealButton.setForeground(Color.RED);
 	
+	hold1.setForeground(new Color(51,51,51));
+	hold1.setBackground(new Color(238,238,238));
+	hold2.setForeground(new Color(51,51,51));
+	hold2.setBackground(new Color(238,238,238));
+	hold3.setForeground(new Color(51,51,51));
+	hold3.setBackground(new Color(238,238,238));
+	hold4.setForeground(new Color(51,51,51));
+	hold4.setBackground(new Color(238,238,238));
+	hold5.setForeground(new Color(51,51,51));
+	hold5.setBackground(new Color(238,238,238));
+	
 	/*** TEXT COMPONENTS ***/
 	
+	Font labelFont = new Font("Consolas", Font.BOLD, 20);
+	
 	creditsLabel.setForeground(Color.YELLOW);
-	creditsLabel.setFont(new Font("Sans Serif", Font.BOLD, 16));
-	creditsLabel.setSize(80, 40);
-	creditsLabel.setLocation(680, 420);
+	creditsLabel.setFont(labelFont);
+	creditsLabel.setSize(90, 40);
+	creditsLabel.setLocation(20, 300);
 	
 	credits.setForeground(Color.YELLOW);
-	credits.setFont(new Font("Consolas", Font.BOLD, 16));
-	credits.setText(Integer.toString(Game.credits) + "$");
-	credits.setSize(80, 40);
-	credits.setLocation(680, 440);
+	credits.setFont(labelFont);
+	credits.setText(Integer.toString(Game.credits));
+	credits.setSize(120, 40);
+	credits.setLocation(115, 300);
 	
-	handList.setLocation(10, 10);
+	betsLabel.setForeground(Color.YELLOW);
+	betsLabel.setFont(labelFont);
+	betsLabel.setSize(90, 40);
+	betsLabel.setLocation(20, 270);
+	
+	bets.setForeground(Color.YELLOW);
+	bets.setFont(labelFont);
+	bets.setText(Integer.toString(Game.bet));
+	bets.setSize(120, 40);
+	bets.setLocation(115, 270);
+	
+	handList.setLocation(20, 10);
 	handList.setEditable(false);
 	handList.setFocusable(false);
-	handList.setOpaque(true);
-	handList.setSize(300, 220);
+	handList.setSize(180, 240);
 	handList.setBackground(Color.BLUE);
 	handList.setForeground(Color.YELLOW);
-	handList.setFont(new Font("Consolas", Font.BOLD, 20));
-	handList.setText("ROYAL FLUSH\n\nSTRAIGHT FLUSH\n4 OF A KIND\nFULL HOUSE\nFLUSH\n3 OF A KIND\nTWO PAIR\nJACKS OR BETTER");
+	handList.setBorder(BorderFactory.createLineBorder(Color.YELLOW));
+	handList.setFont(labelFont);
+	handList.setText(
+			"ROYAL FLUSH.....\n\n"
+			+ "STRAIGHT FLUSH..\n"
+			+ "4 OF A KIND.....\n"
+			+ "FULL HOUSE......\n"
+			+ "FLUSH...........\n"
+			+ "STRAIGHT........\n"
+			+ "3 OF A KIND.....\n"
+			+ "TWO PAIR........\n"
+			+ "JACKS OR BETTER.");
+	
+	multi1.setSize(115, 240);
+	multi1.setLocation(200,10);
+	multi1.setBackground(Color.BLUE);
+	multi1.setForeground(Color.YELLOW);
+	multi1.setBorder(BorderFactory.createLineBorder(Color.YELLOW));
+	multi1.setFont(labelFont);
+	multi1.setFocusable(false);
+	multi1.setEditable(false);
+	multi1.setText("       250\n\n"
+			+ "        50\n"
+			+ "        25\n"
+			+ "         9\n"
+			+ "         6\n"
+			+ "         4\n"
+			+ "         3\n"
+			+ "         2\n"
+			+ "         1");
+	
+	multi2.setSize(115,240);
+	multi2.setLocation(315,10);
+	multi2.setBackground(Color.BLUE);
+	multi2.setForeground(Color.YELLOW);
+	multi2.setBorder(BorderFactory.createLineBorder(Color.YELLOW));
+	multi2.setFont(labelFont);
+	multi2.setFocusable(false);
+	multi2.setEditable(false);
+	multi2.setText("       500\n\n"
+			+ "       100\n"
+			+ "        50\n"
+			+ "        18\n"
+			+ "        12\n"
+			+ "         8\n"
+			+ "         6\n"
+			+ "         4\n"
+			+ "         2");
+	
+	multi3.setSize(115,240);
+	multi3.setLocation(430,10);
+	multi3.setBackground(Color.BLUE);
+	multi3.setForeground(Color.YELLOW);
+	multi3.setBorder(BorderFactory.createLineBorder(Color.YELLOW));
+	multi3.setFont(labelFont);
+	multi3.setFocusable(false);
+	multi3.setEditable(false);
+	multi3.setText("       750\n\n"
+			+ "       150\n"
+			+ "        75\n"
+			+ "        27\n"
+			+ "        18\n"
+			+ "        12\n"
+			+ "         9\n"
+			+ "         6\n"
+			+ "         3");
+	
+	multi4.setSize(115,240);
+	multi4.setLocation(545,10);
+	multi4.setBackground(Color.BLUE);
+	multi4.setForeground(Color.YELLOW);
+	multi4.setBorder(BorderFactory.createLineBorder(Color.YELLOW));
+	multi4.setFont(labelFont);
+	multi4.setFocusable(false);
+	multi4.setEditable(false);
+	multi4.setText("      1000\n\n"
+			+ "       200\n"
+			+ "       100\n"
+			+ "        36\n"
+			+ "        24\n"
+			+ "        16\n"
+			+ "        12\n"
+			+ "        8\n"
+			+ "        4");
+	
+	multi5.setSize(115,240);
+	multi5.setLocation(660,10);
+	multi5.setBackground(Color.BLUE);
+	multi5.setForeground(Color.YELLOW);
+	multi5.setBorder(BorderFactory.createLineBorder(Color.YELLOW));
+	multi5.setFont(labelFont);
+	multi5.setFocusable(false);
+	multi5.setEditable(false);
+	multi5.setText("      4000\n\n"
+			+ "       250\n"
+			+ "       125\n"
+			+ "        45\n"
+			+ "        30\n"
+			+ "        20\n"
+			+ "        15\n"
+			+ "        10\n"
+			+ "         5");
 	
 	/*** IMAGE COMPONENTS ***/
 	
@@ -137,26 +299,294 @@ public static void buildGUI()
 	
 	/*** EVENT HANDLERS ***/
 	
+	// Draw cards button
 	dealButton.addActionListener(new ActionListener() 
 	{
 
 		@Override
 		public void actionPerformed(ActionEvent ae) {
 			
-		Deck currentDeck = new Deck();
-		ArrayList<Card> hand = currentDeck.deal();
-	
-		pbCard1.setCardImage(hand.get(0));
-		pbCard2.setCardImage(hand.get(1));
-		pbCard3.setCardImage(hand.get(2));
-		pbCard4.setCardImage(hand.get(3));
-		pbCard5.setCardImage(hand.get(4));
+		switch (Game.round) {
+		
+		case 0:			
+			hand = currentDeck.deal();
+		
+			pbCard1.setCardImage(hand[0]);
+			pbCard2.setCardImage(hand[1]);
+			pbCard3.setCardImage(hand[2]);
+			pbCard4.setCardImage(hand[3]);
+			pbCard5.setCardImage(hand[4]);
 			
+			hold1.setEnabled(true);
+			hold2.setEnabled(true);
+			hold3.setEnabled(true);
+			hold4.setEnabled(true);
+			hold5.setEnabled(true);
+			
+			Game.round++;
+		break;
+		
+		case 1:
+			hand = currentDeck.dealSecond(hand);
+			
+			pbCard1.setCardImage(hand[0]);
+			pbCard2.setCardImage(hand[1]);
+			pbCard3.setCardImage(hand[2]);
+			pbCard4.setCardImage(hand[3]);
+			pbCard5.setCardImage(hand[4]);
+			
+			Game.round++;
+		break;
+		
+		case 2:
+			Game.round = 0;
+		break;
+		}//switch
+		
 		}
 		
 	});//dealButton.addActionListener
 	
+	//Hold cards buttons
+	
+	hold1.addActionListener(new ActionListener(){
+
+		@Override
+		public void actionPerformed(ActionEvent ae) {
+			
+			if (hand[0].held == false) 
+			{
+				hand[0].held = true;
+				hold1.setText("HELD");
+				hold1.setForeground(Color.ORANGE);
+				hold1.setBackground(Color.RED);
+				hold1.repaint();
+			}
+			
+			else if (hand[0].held == true) 
+			{
+				hand[0].held = false;
+				hold1.setText("HOLD");
+				hold1.setForeground(new Color(51,51,51));
+				hold1.setBackground(new Color(238,238,238));
+				hold1.repaint();
+			}
+			
+			System.out.println("1st card is held: " + hand[0].held);
+
+		}
+	}); //Hold 1st card buttons
+	
+	hold2.addActionListener(new ActionListener(){
+
+		@Override
+		public void actionPerformed(ActionEvent ae) {
+			
+			if (hand[1].held == false) 
+			{
+				hand[1].held = true;
+				hold2.setText("HELD");
+				hold2.setForeground(Color.ORANGE);
+				hold2.setBackground(Color.RED);
+				hold2.repaint();
+			}
+			
+			else if (hand[1].held == true) 
+			{
+				hand[1].held = false;
+				hold2.setText("HOLD");
+				hold2.setForeground(new Color(51,51,51));
+				hold2.setBackground(new Color(238,238,238));
+				hold2.repaint();
+			}
+			
+			System.out.println("2nd card is held: " + hand[1].held);
+
+		}
+	}); //Hold 2nd card buttons
+	
+	hold3.addActionListener(new ActionListener(){
+
+		@Override
+		public void actionPerformed(ActionEvent ae) {
+			
+			if (hand[2].held == false) 
+			{
+				hand[2].held = true;
+				hold3.setText("HELD");
+				hold3.setForeground(Color.ORANGE);
+				hold3.setBackground(Color.RED);
+				hold3.repaint();
+			}
+			
+			else if (hand[2].held == true) 
+			{
+				hand[2].held = false;
+				hold3.setText("HOLD");
+				hold3.setForeground(new Color(51,51,51));
+				hold3.setBackground(new Color(238,238,238));
+				hold3.repaint();
+			}
+			
+			System.out.println("3rd card is held: " + hand[2].held);
+
+		}
+	}); //Hold 3rd card buttons
+	
+	hold4.addActionListener(new ActionListener(){
+
+		@Override
+		public void actionPerformed(ActionEvent ae) {
+			
+			if (hand[3].held == false) 
+			{
+				hand[3].held = true;
+				hold4.setText("HELD");
+				hold4.setForeground(Color.ORANGE);
+				hold4.setBackground(Color.RED);
+				hold4.repaint();
+			}
+			
+			else if (hand[3].held == true) 
+			{
+				hand[3].held = false;
+				hold4.setText("HOLD");
+				hold4.setForeground(new Color(51,51,51));
+				hold4.setBackground(new Color(238,238,238));
+				hold4.repaint();
+			}
+			
+			System.out.println("4th card is held: " + hand[3].held);
+
+		}
+	}); //Hold 4th card buttons
+	
+	hold5.addActionListener(new ActionListener(){
+
+		@Override
+		public void actionPerformed(ActionEvent ae) {
+			
+			if (hand[4].held == false) 
+			{
+				hand[4].held = true;
+				hold5.setText("HELD");
+				hold5.setForeground(Color.ORANGE);
+				hold5.setBackground(Color.RED);
+				hold5.repaint();
+			}
+			
+			else if (hand[4].held == true) 
+			{
+				hand[4].held = false;
+				hold5.setText("HOLD");
+				hold5.setForeground(new Color(51,51,51));
+				hold5.setBackground(new Color(238,238,238));
+				hold5.repaint();
+			}
+			
+			System.out.println("5th card is held: " + hand[4].held);
+
+		}
+	}); //Hold 5th card buttons
+	
+	betOne.addActionListener(new ActionListener() {
+
+		@Override
+		public void actionPerformed(ActionEvent ae) {
+			
+			if (Game.credits > 0) {
+			
+				if (Game.bet <= 5) 
+				{
+					Game.bet++;
+				}
+				
+				switch (Game.bet) 
+				{
+				
+				case 1: 
+					multi1.setBackground(Color.RED);
+					Game.credits--;
+				break;
+				
+				case 2: 
+					multi1.setBackground(Color.BLUE);
+					multi2.setBackground(Color.RED);
+					Game.credits--;
+				break;
+				
+				case 3: 
+					multi1.setBackground(Color.BLUE);
+					multi2.setBackground(Color.BLUE);
+					multi3.setBackground(Color.RED);
+					Game.credits--;
+				break;
+				
+				case 4:
+					multi1.setBackground(Color.BLUE);
+					multi2.setBackground(Color.BLUE);
+					multi3.setBackground(Color.BLUE);
+					multi4.setBackground(Color.RED);
+					Game.credits--;
+				break;
+				
+				case 5:
+					multi1.setBackground(Color.BLUE);
+					multi2.setBackground(Color.BLUE);
+					multi3.setBackground(Color.BLUE);
+					multi4.setBackground(Color.BLUE);
+					multi5.setBackground(Color.RED);
+					Game.credits--;
+					
+					betOne.setEnabled(false);
+					betMax.setEnabled(false);
+					
+				break;
+				} //switch
+				
+				bets.setText(Integer.toString(Game.bet));
+				credits.setText(Integer.toString(Game.credits));
+			
+			}//if credits are not 0
+			
+			else 
+			{
+				System.out.println("GAME OVER!");
+			}
+		}
+		
+	}); //betOne button
+	
+	betMax.addActionListener(new ActionListener() {
+
+		@Override
+		public void actionPerformed(ActionEvent e) {
+			
+			if (Game.credits > 4) {
+			
+				multi1.setBackground(Color.BLUE);
+				multi2.setBackground(Color.BLUE);
+				multi3.setBackground(Color.BLUE);
+				multi4.setBackground(Color.BLUE);
+				multi5.setBackground(Color.RED);
+				
+				Game.bet = 5;
+				Game.credits -= Game.bet;
+				
+				betOne.setEnabled(false);
+				betMax.setEnabled(false);
+			
+			}//if credits are greater than 5
+			
+			else {
+				System.out.println("NOT ENOUGH CREDITS!");
+			}
+			
+			bets.setText(Integer.toString(Game.bet));
+			credits.setText(Integer.toString(Game.credits));
+		}
+		
+	});//betMax button
+	
 }//buildGUI method
-
-
 } //GUI class

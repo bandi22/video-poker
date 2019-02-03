@@ -2,8 +2,10 @@ package videopoker;
 
 public class Game {
 	
-public static int credits = 100;
+public static int credits = 200;
+public static int bet = 0;
 
+public static int round = 0;
 
 
 enum Combo {

@@ -5,7 +5,7 @@ public class Card {
 	Suit suit;
 	Rank rank;
 	
-	public boolean held = false;
+	boolean held = false;
 	
 	public Card(Rank rank, Suit suit) 
 	{

@@ -2,7 +2,6 @@ package videopoker;
 
 import java.awt.Graphics;
 import java.awt.image.BufferedImage;
-import java.io.File;
 import javax.imageio.ImageIO;
 import javax.swing.JPanel;
 
@@ -10,7 +9,7 @@ public class PictureBox extends JPanel
 {
 	private BufferedImage image;
 	
-	public PictureBox() 
+	public PictureBox()
 	{
 		try 
 		{
@@ -28,7 +27,7 @@ public class PictureBox extends JPanel
 	{
 		super.paintComponent(g);
 		g.drawImage(image,0,0,this);
-	} //overriding paintcomponent to call superclass method for rendering the BufferedImage
+	} //overriding paintComponent to call superclass method for rendering the BufferedImage
 	
 	public void setCardImage(Card card) 
 	{
