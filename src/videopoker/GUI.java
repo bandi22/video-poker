@@ -2,6 +2,8 @@ package videopoker;
 
 import java.awt.*;
 import java.awt.event.*;
+import java.util.Arrays;
+
 import javax.swing.*;
 
 public class GUI {
@@ -33,7 +35,7 @@ public static void buildGUI()
 	JButton hold3 = new JButton("HOLD");
 	JButton hold4 = new JButton("HOLD");
 	JButton hold5 = new JButton("HOLD");
-	JButton dealButton = new JButton("DRAW");
+	JButton dealButton = new JButton("DEAL");
 	JButton betOne = new JButton("BET ONE");
 	JButton betMax = new JButton("BET MAX");
 	
@@ -111,6 +113,7 @@ public static void buildGUI()
 	betOne.setLocation(680,400);
 	betMax.setLocation(680,350);
 	
+	dealButton.setEnabled(false);
 	hold1.setEnabled(false);
 	hold2.setEnabled(false);
 	hold3.setEnabled(false);
@@ -138,6 +141,10 @@ public static void buildGUI()
 	hold4.setBackground(new Color(238,238,238));
 	hold5.setForeground(new Color(51,51,51));
 	hold5.setBackground(new Color(238,238,238));
+	betOne.setForeground(new Color(51,51,51));
+	betOne.setBackground(new Color(238,238,238));
+	betMax.setForeground(new Color(51,51,51));
+	betMax.setBackground(new Color(238,238,238));
 	
 	/*** TEXT COMPONENTS ***/
 	
@@ -310,6 +317,11 @@ public static void buildGUI()
 		
 		case 0:			
 			hand = currentDeck.deal();
+			
+			betOne.setEnabled(false);
+			betMax.setEnabled(false);
+			
+			dealButton.setText("DRAW");
 		
 			pbCard1.setCardImage(hand[0]);
 			pbCard2.setCardImage(hand[1]);
@@ -335,11 +347,85 @@ public static void buildGUI()
 			pbCard4.setCardImage(hand[3]);
 			pbCard5.setCardImage(hand[4]);
 			
+			//Evaluator.checkHand(hand);
+			
+			for (int i = 0; i < hand.length; i++) 
+			{
+				System.out.println("++ " + hand[i].getName() + " ++");
+			}
+			
+			System.out.println("***********************");
+			System.out.println(Evaluator.checkHand(hand));
+			
 			Game.round++;
 		break;
 		
 		case 2:
+			
+			Game.credits += (Game.multiplier * Game.bet);
+			
+			dealButton.setText("DEAL");
 			Game.round = 0;
+			Game.bet = 0;
+			Game.multiplier = 0;
+			
+			for (int i = 0; i < hand.length; i++) 
+			{
+				hand[i].held = false;
+			}
+			
+			pbCard1.resetCardImage(hand[0]);
+			pbCard2.resetCardImage(hand[1]);
+			pbCard3.resetCardImage(hand[2]);
+			pbCard4.resetCardImage(hand[3]);
+			pbCard5.resetCardImage(hand[4]);
+			
+			Arrays.fill(hand, null);
+			
+			hold1.setText("HOLD");
+			hold1.setForeground(new Color(51,51,51));
+			hold1.setBackground(new Color(238,238,238));
+			hold1.repaint();
+			
+			hold2.setText("HOLD");
+			hold2.setForeground(new Color(51,51,51));
+			hold2.setBackground(new Color(238,238,238));
+			hold2.repaint();
+			
+			hold3.setText("HOLD");
+			hold3.setForeground(new Color(51,51,51));
+			hold3.setBackground(new Color(238,238,238));
+			hold3.repaint();
+			
+			hold4.setText("HOLD");
+			hold4.setForeground(new Color(51,51,51));
+			hold4.setBackground(new Color(238,238,238));
+			hold4.repaint();
+			
+			hold5.setText("HOLD");
+			hold5.setForeground(new Color(51,51,51));
+			hold5.setBackground(new Color(238,238,238));
+			hold5.repaint();
+			
+			multi1.setBackground(Color.BLUE);
+			multi2.setBackground(Color.BLUE);
+			multi3.setBackground(Color.BLUE);
+			multi4.setBackground(Color.BLUE);
+			multi5.setBackground(Color.BLUE);
+			
+			dealButton.setEnabled(false);
+			hold1.setEnabled(false);
+			hold2.setEnabled(false);
+			hold3.setEnabled(false);
+			hold4.setEnabled(false);
+			hold5.setEnabled(false);
+			
+			bets.setText(Integer.toString(Game.bet));
+			credits.setText(Integer.toString(Game.credits));
+			
+			betOne.setEnabled(true);
+			betMax.setEnabled(true);
+			
 		break;
 		}//switch
 		
@@ -371,9 +457,6 @@ public static void buildGUI()
 				hold1.setBackground(new Color(238,238,238));
 				hold1.repaint();
 			}
-			
-			System.out.println("1st card is held: " + hand[0].held);
-
 		}
 	}); //Hold 1st card buttons
 	
@@ -399,8 +482,6 @@ public static void buildGUI()
 				hold2.setBackground(new Color(238,238,238));
 				hold2.repaint();
 			}
-			
-			System.out.println("2nd card is held: " + hand[1].held);
 
 		}
 	}); //Hold 2nd card buttons
@@ -427,9 +508,6 @@ public static void buildGUI()
 				hold3.setBackground(new Color(238,238,238));
 				hold3.repaint();
 			}
-			
-			System.out.println("3rd card is held: " + hand[2].held);
-
 		}
 	}); //Hold 3rd card buttons
 	
@@ -456,8 +534,6 @@ public static void buildGUI()
 				hold4.repaint();
 			}
 			
-			System.out.println("4th card is held: " + hand[3].held);
-
 		}
 	}); //Hold 4th card buttons
 	
@@ -484,8 +560,6 @@ public static void buildGUI()
 				hold5.repaint();
 			}
 			
-			System.out.println("5th card is held: " + hand[4].held);
-
 		}
 	}); //Hold 5th card buttons
 	
@@ -494,7 +568,10 @@ public static void buildGUI()
 		@Override
 		public void actionPerformed(ActionEvent ae) {
 			
+			
 			if (Game.credits > 0) {
+				
+				dealButton.setEnabled(true);
 			
 				if (Game.bet <= 5) 
 				{
@@ -563,6 +640,8 @@ public static void buildGUI()
 		public void actionPerformed(ActionEvent e) {
 			
 			if (Game.credits > 4) {
+				
+				dealButton.setEnabled(true);
 			
 				multi1.setBackground(Color.BLUE);
 				multi2.setBackground(Color.BLUE);
