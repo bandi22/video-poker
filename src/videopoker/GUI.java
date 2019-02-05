@@ -50,6 +50,7 @@ public static void buildGUI()
 	JLabel credits = new JLabel();
 	JLabel betsLabel = new JLabel("BET:");
 	JLabel bets = new JLabel();
+	textDisplay wins = new textDisplay();
 	
 	PictureBox pbCard1 = new PictureBox();
 	PictureBox pbCard2 = new PictureBox();
@@ -85,6 +86,7 @@ public static void buildGUI()
 	panel.add(credits);
 	panel.add(bets);
 	panel.add(betsLabel);
+	panel.add(wins);
 	panel.add(multi1);
 	panel.add(multi2);
 	panel.add(multi3);
@@ -425,6 +427,8 @@ public static void buildGUI()
 			
 			betOne.setEnabled(true);
 			betMax.setEnabled(true);
+			
+			
 			
 		break;
 		}//switch
