@@ -46,11 +46,18 @@ public static void buildGUI()
 	JTextArea multi4 = new JTextArea();
 	JTextArea multi5 = new JTextArea();
 	
+	JTextArea strip1 = new JTextArea();
+	JTextArea strip2 = new JTextArea();
+	JTextArea strip3 = new JTextArea();
+	JTextArea strip4 = new JTextArea();
+	JTextArea strip5 = new JTextArea();
+	JTextArea strip6 = new JTextArea();
+	
 	JLabel creditsLabel = new JLabel("CREDITS:");
 	JLabel credits = new JLabel();
 	JLabel betsLabel = new JLabel("BET:");
 	JLabel bets = new JLabel();
-	textDisplay wins = new textDisplay();
+	TextDisplay wins = new TextDisplay();
 	
 	PictureBox pbCard1 = new PictureBox();
 	PictureBox pbCard2 = new PictureBox();
@@ -92,6 +99,12 @@ public static void buildGUI()
 	panel.add(multi3);
 	panel.add(multi4);
 	panel.add(multi5);
+	handList.add(strip1);
+	multi1.add(strip2);
+	multi2.add(strip3);
+	multi3.add(strip4);
+	multi4.add(strip5);
+	multi5.add(strip6);
 	
 	panel.setBackground(Color.BLUE);
 	
@@ -173,6 +186,8 @@ public static void buildGUI()
 	bets.setText(Integer.toString(Game.bet));
 	bets.setSize(120, 40);
 	bets.setLocation(115, 270);
+	
+	wins.setVisible(false);
 	
 	handList.setLocation(20, 10);
 	handList.setEditable(false);
@@ -305,6 +320,47 @@ public static void buildGUI()
 	pbCard5.setVisible(true);
 	pbCard5.setSize(118, 170);
 	
+	strip1.setSize(180, 24);
+	strip1.setLocation(0, 120);
+	strip1.setEditable(false);
+	strip1.setFocusable(false);
+	strip1.setVisible(false);
+	strip1.setBackground(new Color(1F,0F,0F,.4F));
+	
+	strip2.setSize(180, 24);
+	strip2.setLocation(0, 120);
+	strip2.setEditable(false);
+	strip2.setFocusable(false);
+	strip2.setVisible(false);
+	strip2.setBackground(new Color(1F,0F,0F,.4F));
+	
+	strip3.setSize(180, 24);
+	strip3.setLocation(0, 120);
+	strip3.setEditable(false);
+	strip3.setFocusable(false);
+	strip3.setVisible(false);
+	strip3.setBackground(new Color(1F,0F,0F,.4F));
+	
+	strip4.setSize(180, 24);
+	strip4.setLocation(0, 120);
+	strip4.setEditable(false);
+	strip4.setFocusable(false);
+	strip4.setVisible(false);
+	strip4.setBackground(new Color(1F,0F,0F,.4F));
+	
+	strip5.setSize(180, 24);
+	strip5.setLocation(0, 120);
+	strip5.setEditable(false);
+	strip5.setFocusable(false);
+	strip5.setVisible(false);
+	strip5.setBackground(new Color(1F,0F,0F,.4F));
+	
+	strip6.setSize(180, 24);
+	strip6.setLocation(0, 120);
+	strip6.setEditable(false);
+	strip6.setFocusable(false);
+	strip6.setVisible(false);
+	strip6.setBackground(new Color(1F,0F,0F,.4F));
 	
 	/*** EVENT HANDLERS ***/
 	
@@ -337,6 +393,13 @@ public static void buildGUI()
 			hold4.setEnabled(true);
 			hold5.setEnabled(true);
 			
+			GUI.setDisplay(Evaluator.checkHand(hand), strip1);
+			GUI.setDisplay(Evaluator.checkHand(hand), strip2);
+			GUI.setDisplay(Evaluator.checkHand(hand), strip3);
+			GUI.setDisplay(Evaluator.checkHand(hand), strip4);
+			GUI.setDisplay(Evaluator.checkHand(hand), strip5);
+			GUI.setDisplay(Evaluator.checkHand(hand), strip6);
+			
 			Game.round++;
 		break;
 		
@@ -351,13 +414,27 @@ public static void buildGUI()
 			
 			//Evaluator.checkHand(hand);
 			
-			for (int i = 0; i < hand.length; i++) 
-			{
-				System.out.println("++ " + hand[i].getName() + " ++");
-			}
+			GUI.setDisplay(Evaluator.checkHand(hand), strip1);
+			GUI.setDisplay(Evaluator.checkHand(hand), strip2);
+			GUI.setDisplay(Evaluator.checkHand(hand), strip3);
+			GUI.setDisplay(Evaluator.checkHand(hand), strip4);
+			GUI.setDisplay(Evaluator.checkHand(hand), strip5);
+			GUI.setDisplay(Evaluator.checkHand(hand), strip6);
 			
-			System.out.println("***********************");
-			System.out.println(Evaluator.checkHand(hand));
+			/* TEST LOOP
+			 * 
+				for (int i = 0; i < hand.length; i++) 
+				{
+					System.out.println("++ " + hand[i].getName() + " ++");
+				}
+				
+				System.out.println("***********************");
+				System.out.println(Evaluator.checkHand(hand));
+				
+			*/
+			
+			wins.setText(Evaluator.checkHand(hand));
+			wins.setVisible(true);
 			
 			Game.round++;
 		break;
@@ -428,7 +505,13 @@ public static void buildGUI()
 			betOne.setEnabled(true);
 			betMax.setEnabled(true);
 			
-			
+			wins.setVisible(false);
+			strip1.setVisible(false);
+			strip2.setVisible(false);
+			strip3.setVisible(false);
+			strip4.setVisible(false);
+			strip5.setVisible(false);
+			strip6.setVisible(false);
 			
 		break;
 		}//switch
@@ -671,5 +754,55 @@ public static void buildGUI()
 		
 	});//betMax button
 	
-}//buildGUI method
-} //GUI class
+}//buildGUI() method
+
+
+public static void setDisplay(Combo combo, JTextArea textArea) 
+{
+	
+	switch (combo) 
+	{
+		case JACKS_OR_BETTER :
+			textArea.setVisible(true);
+			textArea.setLocation(0, 216);
+			break;
+		case TWO_PAIR :
+			textArea.setVisible(true);
+			textArea.setLocation(0, 192);
+			break;
+		case THREE_OF_A_KIND :
+			textArea.setVisible(true);
+			textArea.setLocation(0, 168);
+			break;
+		case STRAIGHT :
+			textArea.setVisible(true);
+			textArea.setLocation(0, 144);
+			break;
+		case FLUSH :
+			textArea.setVisible(true);
+			textArea.setLocation(0, 120);
+			break;
+		case FULL_HOUSE :
+			textArea.setVisible(true);
+			textArea.setLocation(0, 96);
+			break;
+		case FOUR_OF_A_KIND :
+			textArea.setVisible(true);
+			textArea.setLocation(0, 72);
+			break;
+		case STRAIGHT_FLUSH :
+			textArea.setVisible(true);
+			textArea.setLocation(0, 48);
+			break;
+		case ROYAL_FLUSH :
+			textArea.setVisible(true);
+			textArea.setLocation(0, 0);
+			break;
+		default :
+			textArea.setVisible(false);
+			break;
+	}//switch
+	
+}//setDisplay() method
+
+}//GUI class
