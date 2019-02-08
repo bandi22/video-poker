@@ -1,10 +1,18 @@
+/** Author: Andras Szabo (2019)
+ * Jacks Or Better 9/6 Video Poker application written with Swing components
+ * =========================================================================
+ * Card textures are from OpenGameArt (https://opengameart.org)
+ * https://opengameart.org/content/colorful-poker-card-back (author: jeffshee) (CC-BY 3.0 License) 
+ * https://opengameart.org/content/playing-cards-vector-png (author: Byron Knoll) (Public Domain CC0)
+ * ====================================================================================================
+ * **/
+
 package videopoker;
 
 import java.awt.*;
 import java.awt.event.*;
-import java.util.Arrays;
-
 import javax.swing.*;
+import java.util.Arrays;
 
 public class GUI {
 	
@@ -26,6 +34,8 @@ public static void main(String[] args) {
 
 public static void buildGUI() 
 {
+	
+	/** DECLARING SWING COMPONENTS **/
 	
 	JFrame frame = new JFrame("Jacks or Better 9/6 Video Poker");
 	JPanel panel = new JPanel();
@@ -65,6 +75,8 @@ public static void buildGUI()
 	PictureBox pbCard4 = new PictureBox();
 	PictureBox pbCard5 = new PictureBox();
 	
+	/** MAIN FRAME SETTINGS **/
+	
 	frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 	frame.setVisible(true);
 	frame.setResizable(false);
@@ -73,7 +85,7 @@ public static void buildGUI()
 	frame.add(panel);
 	panel.setLayout(null);
 	
-	/*** PANEL COMPONENTS ***/
+	/** PANEL COMPONENTS **/
 	
 	panel.add(hold1);
 	panel.add(hold2);
@@ -108,7 +120,7 @@ public static void buildGUI()
 	
 	panel.setBackground(Color.BLUE);
 	
-	/*** BUTTONS ***/
+	/** BUTTONS **/
 	
 	hold1.setSize(80,30);
 	hold2.setSize(80,30);
@@ -144,6 +156,7 @@ public static void buildGUI()
 	betOne.setFocusable(false);
 	betMax.setFocusable(false);
 	
+	dealButton.setBackground(new Color(238,238,238));
 	dealButton.setForeground(Color.RED);
 	
 	hold1.setForeground(new Color(51,51,51));
@@ -161,7 +174,7 @@ public static void buildGUI()
 	betMax.setForeground(new Color(51,51,51));
 	betMax.setBackground(new Color(238,238,238));
 	
-	/*** TEXT COMPONENTS ***/
+	/** TEXT COMPONENTS **/
 	
 	Font labelFont = new Font("Consolas", Font.BOLD, 20);
 	
@@ -298,7 +311,8 @@ public static void buildGUI()
 			+ "        10\n"
 			+ "         5");
 	
-	/*** IMAGE COMPONENTS ***/
+	
+	/***IMAGE COMPONENTS **/
 	
 	pbCard1.setLocation(10, 350);
 	pbCard1.setVisible(true);
@@ -362,7 +376,18 @@ public static void buildGUI()
 	strip6.setVisible(false);
 	strip6.setBackground(new Color(1F,0F,0F,.4F));
 	
-	/*** EVENT HANDLERS ***/
+	
+	/** EVENT HANDLERS **/
+	
+	/* TEST HAND */
+	/*
+	Card[] testHand = new Card[5];
+	testHand[0] = new Card(Rank.Ten, Suit.Hearts);
+	testHand[1] = new Card(Rank.Jack, Suit.Hearts);
+	testHand[2] = new Card(Rank.Queen, Suit.Hearts);
+	testHand[3] = new Card(Rank.King, Suit.Hearts);
+	testHand[4] = new Card(Rank.Ace, Suit.Hearts);
+	*/
 	
 	// Draw cards button
 	dealButton.addActionListener(new ActionListener() 
@@ -375,6 +400,7 @@ public static void buildGUI()
 		
 		case 0:			
 			hand = currentDeck.deal();
+			//hand = testHand;
 			
 			betOne.setEnabled(false);
 			betMax.setEnabled(false);
@@ -405,6 +431,7 @@ public static void buildGUI()
 		
 		case 1:
 			hand = currentDeck.dealSecond(hand);
+			//hand = testHand;
 			
 			pbCard1.setCardImage(hand[0]);
 			pbCard2.setCardImage(hand[1]);
@@ -437,6 +464,9 @@ public static void buildGUI()
 			wins.setVisible(true);
 			
 			Game.round++;
+			
+			dealButton.setText("DEAL");
+			
 		break;
 		
 		case 2:
@@ -765,38 +795,56 @@ public static void setDisplay(Combo combo, JTextArea textArea)
 		case JACKS_OR_BETTER :
 			textArea.setVisible(true);
 			textArea.setLocation(0, 216);
+			textArea.repaint();
+			textArea.getParent().repaint();
 			break;
 		case TWO_PAIR :
 			textArea.setVisible(true);
 			textArea.setLocation(0, 192);
+			textArea.repaint();
+			textArea.getParent().repaint();
 			break;
 		case THREE_OF_A_KIND :
 			textArea.setVisible(true);
 			textArea.setLocation(0, 168);
+			textArea.repaint();
+			textArea.getParent().repaint();
 			break;
 		case STRAIGHT :
 			textArea.setVisible(true);
 			textArea.setLocation(0, 144);
+			textArea.repaint();
+			textArea.getParent().repaint();
 			break;
 		case FLUSH :
 			textArea.setVisible(true);
 			textArea.setLocation(0, 120);
+			textArea.repaint();
+			textArea.getParent().repaint();
 			break;
 		case FULL_HOUSE :
 			textArea.setVisible(true);
 			textArea.setLocation(0, 96);
+			textArea.repaint();
+			textArea.getParent().repaint();
 			break;
 		case FOUR_OF_A_KIND :
 			textArea.setVisible(true);
 			textArea.setLocation(0, 72);
+			textArea.repaint();
+			textArea.getParent().repaint();
 			break;
 		case STRAIGHT_FLUSH :
 			textArea.setVisible(true);
 			textArea.setLocation(0, 48);
+			textArea.repaint();
+			textArea.getParent().repaint();
 			break;
 		case ROYAL_FLUSH :
 			textArea.setVisible(true);
 			textArea.setLocation(0, 0);
+			textArea.repaint();
+			textArea.getParent().repaint();
 			break;
 		default :
 			textArea.setVisible(false);
